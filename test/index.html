@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+	<title>jquery-touch-fix - Unit tests</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<link rel="stylesheet" type="text/css" href="../bower_components/mocha/mocha.css">
+	<style>
+		#mocha .test code, #mocha .test pre {
+			white-space:pre-line;
+		}
+	</style>
+	<script type="text/javascript" src="../bower_components/requirejs/require.js"></script>
+	<script type="text/javascript" src="../bower_components/mocha/mocha.js"></script>
+	<script type="text/javascript" src="../bower_components/jquery/dist/jquery.js"></script>
+
+</head>
+<body>
+	<div id="mocha"></div>
+	<script type="text/javascript">
+		mocha.setup({
+			ui : 'bdd',
+			reporter : ['html'],
+			globals  : ['results']
+		});
+		mocha.checkLeaks();
+		require.config({
+			baseUrl : '../bower_components/'
+		});
+		require([
+			'chai/chai', 
+			'../jquery-when-always'  
+		],function( chai, jQueryWhenAlways ){
+			var expect=chai.expect;
+
+			describe("jquery-when-always",function(){
+				it(".whenAlways should be mapped to jQuery",function(){
+					expect(jQueryWhenAlways.whenAlways).to.exist;
+				});
+				it(".whenAlways() should return a promise",function(){
+
+					expect(jQueryWhenAlways.whenAlways()).to.contain.keys(
+						Object.keys(
+							jQuery.Deferred().promise()
+						)
+					);
+				});
+				it("should return an instance of jQuery",function(){
+					expect(jQueryWhenAlways).to.equal(jQuery);
+				});
+				it("should not fire the always callback until every Defer is fails/succeeds",function(done){
+					var failure=$.Deferred();
+					jQueryWhenAlways.whenAlways(true,true,failure,true)
+						.always(function(t1,t2,t3,t4){
+							expect(t1).to.equal(true);
+							expect(t2).to.equal(true);
+							expect(t3).to.equal(false);
+							expect(t4).to.equal(true);
+							done();
+						});
+					failure.reject(false)						
+				});
+				it("should fire the fail callbacks if one or more Defers fail",function(done){
+					var failure=$.Deferred();
+
+					jQueryWhenAlways.whenAlways(true,true,failure,true)
+						.fail(function(t1,t2,t3,t4){
+							expect(true).to.equal(true);
+							done();
+						}).done(function(){
+							expect(true).to.equal(false);
+						});
+					failure.reject(false)
+				});
+			});
+			mocha.run();
+		});			
+	</script>
+</body>
+</html>

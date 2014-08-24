@@ -1,0 +1,5 @@
+[credential]
+	helper = osxkeychain
+[user]
+	name = Russell Munson
+	email = russ.munson@gmail.com

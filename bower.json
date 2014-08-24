@@ -1,0 +1,34 @@
+{
+  "name": "jquery-when-always",
+  "main": "jquery-when-always.js",
+  "version": "1.0.0",
+  "description": "jQuery plugin to allow always and fail for $.when-like statements to resolve similar to done.  All defers wait for full-set completion until the master defer (@see $.when) is resolved/rejected.",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "jquery-when-always",
+    "jquery.when",
+    "when",
+    "always",
+    "deferred",
+    "promise"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies" : {
+    "jquery": ">=1.7.1"
+  },
+  "devDependencies": {
+    "requirejs": "~2.1.14",
+    "mocha": "~1.20.1",
+    "chai": "~1.9.1"
+  }
+}
